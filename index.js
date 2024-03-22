@@ -44,15 +44,6 @@ const authenticateUser = (req, res, next) => {
     });
 };
 
-// Serve static files (uploaded images)
-const dirname = path.resolve();
-app.use('/uploads', express.static(path.join(dirname, '/uploads')));
-
-// Routes for serving client-side files
-app.use(express.static(path.join(__dirname, 'client', 'dist')));
-app.get('*', (req, res) =>
-    res.sendFile(path.resolve(__dirname, 'client', 'dist', 'index.html'))
-);
 
 // Login route
 app.post('/login', (req, res) => {
