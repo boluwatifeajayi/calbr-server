@@ -20,7 +20,8 @@ db.once('open', () => {
 const touristCenterSchema = new mongoose.Schema({
     label: String,
     description: String,
-    image: String
+    image: String,
+    openingHours: String // Added openingHours field to the schema
 });
 
 const TouristCenter = mongoose.model('TouristCenter', touristCenterSchema);
@@ -62,8 +63,8 @@ app.post('/login', (req, res) => {
 // Create a tourist center
 app.post('/touristCenters', async (req, res) => {
     try {
-        const { label, description, image } = req.body;
-        const touristCenter = new TouristCenter({ label, description, image });
+        const { label, description, image, openingHours } = req.body; // Added openingHours from request body
+        const touristCenter = new TouristCenter({ label, description, image, openingHours }); // Added openingHours to TouristCenter object
         await touristCenter.save();
         res.status(201).json(touristCenter);
     } catch (err) {
@@ -98,8 +99,8 @@ app.get('/touristCenters/:id', async (req, res) => {
 // Update a tourist center
 app.put('/touristCenters/:id', async (req, res) => {
     try {
-        const { label, description, image } = req.body;
-        const updatedTouristCenter = await TouristCenter.findByIdAndUpdate(req.params.id, { label, description, image }, { new: true });
+        const { label, description, image, openingHours } = req.body; // Added openingHours from request body
+        const updatedTouristCenter = await TouristCenter.findByIdAndUpdate(req.params.id, { label, description, image, openingHours }, { new: true });
         if (!updatedTouristCenter) {
             res.status(404).send('Tourist Center not found');
         } else {
