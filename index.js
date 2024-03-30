@@ -2,13 +2,13 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
-const cors = require('cors'); // Import cors package
+const cors = require('cors'); 
 
 const app = express();
 const port = 5000;
 const secretKey = 'yourSecretKey';
 
-// Connect to MongoDB
+
 mongoose.connect('mongodb+srv://bolu:bolu123@imq.10yj3f7.mongodb.net/test', { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -16,20 +16,20 @@ db.once('open', () => {
     console.log('Connected to MongoDB');
 });
 
-// Define Schema for Tourist Center
+
 const touristCenterSchema = new mongoose.Schema({
     label: String,
     description: String,
     image: String,
-    openingHours: String // Added openingHours field to the schema
+    openingHours: String 
 });
 
 const TouristCenter = mongoose.model('TouristCenter', touristCenterSchema);
 
 app.use(bodyParser.json());
-app.use(cors()); // Use cors middleware to allow access from any origin
+app.use(cors());
 
-// Middleware for authentication
+
 const authenticateUser = (req, res, next) => {
     const token = req.headers.authorization;
     if (!token) {
@@ -58,13 +58,13 @@ app.post('/login', (req, res) => {
     }
 });
 
-// Routes
+
 
 // Create a tourist center
 app.post('/touristCenters', async (req, res) => {
     try {
-        const { label, description, image, openingHours } = req.body; // Added openingHours from request body
-        const touristCenter = new TouristCenter({ label, description, image, openingHours }); // Added openingHours to TouristCenter object
+        const { label, description, image, openingHours } = req.body; 
+        const touristCenter = new TouristCenter({ label, description, image, openingHours }); 
         await touristCenter.save();
         res.status(201).json(touristCenter);
     } catch (err) {
@@ -99,7 +99,7 @@ app.get('/touristCenters/:id', async (req, res) => {
 // Update a tourist center
 app.put('/touristCenters/:id', async (req, res) => {
     try {
-        const { label, description, image, openingHours } = req.body; // Added openingHours from request body
+        const { label, description, image, openingHours } = req.body; 
         const updatedTouristCenter = await TouristCenter.findByIdAndUpdate(req.params.id, { label, description, image, openingHours }, { new: true });
         if (!updatedTouristCenter) {
             res.status(404).send('Tourist Center not found');
